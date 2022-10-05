@@ -80,6 +80,8 @@ public:
     /**
      * @brief Update the weights using the delta_weights field.
      *
+     * @param inputs The vector of inputs to the perceptron.
+     * @param desired_output The desired output from the perceptron.
      */
     void update_weights( const std::vector< double >& inputs, double desired_output );
 
