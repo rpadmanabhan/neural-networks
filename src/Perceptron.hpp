@@ -1,5 +1,4 @@
-#ifndef PERCEPTRON
-#define PERCEPTRON
+#pragma once
 
 #include <string>
 #include <vector>
@@ -27,12 +26,6 @@ private:
     std::unique_ptr< ActivationFunction > __activation_function_ptr;
 
     /**
-     * @brief Calculate and update the `delta` field.
-     * delta = -1 * (desired_output - perceptron_output) * derivative_activity_function
-     */
-    void __calc_delta( double desired_output );
-
-    /**
      * @brief Calculate and update the `activity` field.
      *
      * @param inputs The vector of inputs to the perceptron.
@@ -44,14 +37,6 @@ private:
      *
     */
     void __calc_activation();
-
-    /**
-     * @brief Calculate and set the `delta_weights` field.
-     *
-     * @param inputs The vector of inputs to the perceptron.
-     * @param desired_output The desired output from the perceptron.
-     */
-    void __calc_delta_weights( const std::vector< double >& inputs, double desired_output );
 
 public:
     std::vector< double > weights;
@@ -78,13 +63,41 @@ public:
     );
 
     /**
-     * @brief Update the weights using the delta_weights field.
+     * @brief Return the output from this perceptron.
+     * 
+     * @param inputs The vector of inputs to the perceptron
+     * @return the computed activation function value.
+     */
+    double get_output( const std::vector< double >& inputs );
+
+    /**
+     * @brief Compute the error w.r.t to a desired output.
+     * 
+     * @param desired_output The desired output from the perceptron
+     * @return The error term
+     */
+    double get_error( double desired_output );
+
+    /**
+     * @brief Calculate and update the `delta` field.
+     * delta = -1 * (desired_output - perceptron_output) * derivative_activity_function
+     * @param desired_output The desired output from the perceptron.
+     */
+    void calc_delta( double desired_output );
+
+    /**
+     * @brief Calculate and set the `delta_weights` field.
      *
      * @param inputs The vector of inputs to the perceptron.
      * @param desired_output The desired output from the perceptron.
      */
-    void update_weights( const std::vector< double >& inputs, double desired_output );
+    void calc_delta_weights( const std::vector< double >& inputs );
+
+    /**
+     * @brief Update the weights using the delta_weights field.
+     *
+     * @param include_bias Whether to include the bias term in the update.
+     */
+    void update_weights( bool include_bias = true );
 
 };
-
-#endif
