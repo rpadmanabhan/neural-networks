@@ -21,32 +21,33 @@ void ffbp(
     std::vector< double > output,
     bool include_bias )
 {
-    // feed forward
+    // Feed Forward
     int idx = 0;
-
     for ( auto & layer : neural_network )
     {
+        // the first layer
         if ( idx == 0 )
             layer.calc_layer_output( input );
+        // Not the first layer - use the previous layer's input.
         else
             layer.calc_layer_output( neural_network[ idx - 1].output );
 
         ++idx;
     }
 
-    // back propogation
+    // Back Propogation
     int last_idx = neural_network.size() - 1;
     for ( idx = last_idx; idx >= 0; --idx )
     {
-
+        // the first layer - feed the inputs directly, use layer above for update
         if ( idx == 0 )
             neural_network[ idx ].update( input, neural_network[ idx + 1 ], include_bias );
+        // output layer - feed previous layer's input, use outputs for update
         else if ( idx == last_idx )
             neural_network[ idx ].update( neural_network[ idx - 1 ].output , output, include_bias );
+        // hidden layer - feed previous layer's input, use layer above for update
         else
             neural_network[ idx ].update( neural_network[ idx - 1 ].output, neural_network[ idx + 1 ], include_bias );
-
-        size_t j = 0;
     }
 }
 
