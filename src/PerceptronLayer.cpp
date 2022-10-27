@@ -27,6 +27,7 @@ void PerceptronLayer::calc_error(
     const std::vector< double >& desired_output
 )
 {
+    this->error.clear();
     size_t i = 0;
     for ( auto& perceptron : this->perceptrons )
     {
@@ -35,10 +36,24 @@ void PerceptronLayer::calc_error(
     }
 }
 
+double PerceptronLayer::get_layer_bigE( const std::vector< double >& desired_output )
+{
+    double bigE = 0;
+    size_t i = 0;
+    for ( auto& perceptron : this->perceptrons )
+    {
+        bigE += perceptron.get_bigE( desired_output[ i ] );
+        ++i;
+    }
+    return bigE;
+}
+
+
 void PerceptronLayer::calc_layer_output(
     const std::vector< double >& inputs
 )
 {
+    this->output.clear();
     size_t i = 0;
     for ( auto& perceptron : this->perceptrons )
     {
@@ -104,4 +119,18 @@ void PerceptronLayer::update_layer_weights( bool include_bias )
         perceptron.update_weights( include_bias );
         this->weights.push_back( perceptron.weights );
     }
+}
+
+void PerceptronLayer::update( const std::vector< double >& inputs, const std::vector< double >& desired_output, bool include_bias )
+{
+    this->calc_layer_delta_values( desired_output );
+    this->calc_layer_delta_weights( inputs );
+    this->update_layer_weights( include_bias );
+}
+
+void PerceptronLayer::update( const std::vector< double >& inputs, const PerceptronLayer& layer_above, bool include_bias )
+{
+    this->calc_layer_delta_values( layer_above );
+    this->calc_layer_delta_weights( inputs );
+    this->update_layer_weights( include_bias );
 }

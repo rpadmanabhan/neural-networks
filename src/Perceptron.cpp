@@ -2,7 +2,7 @@
 
 #include <cmath>
 #include <stdexcept>
-
+#include <iostream>
 
 struct SigmoidActivation: ActivationFunction
 {
@@ -62,15 +62,20 @@ double Perceptron::get_output( const std::vector< double >& inputs )
 
 }
 
-double Perceptron::get_error( double desired_output )
-{
+double Perceptron::get_error( double desired_output ) const
+{   
     return desired_output - this->activation;
+}
+
+double Perceptron::get_bigE( double desired_output ) const
+{   
+    return pow( this->get_error( desired_output ), 2 ) / 2;
 }
 
 void Perceptron::calc_delta( double desired_output )
 {
     this->delta = ( this->get_error( desired_output ) ) * \
-        this->__activation_function_ptr->derivative( this->activation );
+        this->__activation_function_ptr->derivative( this->activity );
 }
 
 void Perceptron::calc_delta_weights( const std::vector< double >& inputs )

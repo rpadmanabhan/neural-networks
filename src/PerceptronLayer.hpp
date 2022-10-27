@@ -88,4 +88,23 @@ public:
      * 
      */
     void update_layer_weights( bool include_bias = false );
+
+    /**
+     * @brief Calculate overall error, i.e. bigE = sum(1/2(error)^2)
+     * 
+     */
+    double get_layer_bigE( const std::vector< double >& desired_output );
+
+    /**
+     * @brief Wrapper to call different functions to update weights based on input and outputs to the perceptron. (Output layer)
+     * 
+     */
+    void update( const std::vector< double >& inputs, const std::vector< double >& desired_output, bool include_bias );
+
+    /**
+     * @brief Wrapper to call different functions to update weights based on input and outputs to the perceptron. (Hidden Layer)
+     * 
+     */
+    void update( const std::vector< double >& inputs, const PerceptronLayer& layer_above, bool include_bias );
+
 };

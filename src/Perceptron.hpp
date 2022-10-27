@@ -76,7 +76,17 @@ public:
      * @param desired_output The desired output from the perceptron
      * @return The error term
      */
-    double get_error( double desired_output );
+    double get_error( double desired_output ) const;
+
+    /**
+     * @brief Compute the bigE term w.r.t to a desired output. i.e. bigE = 1/2(error^2)
+     *
+     * @param desired_output The desired output from the perceptron
+     * @return The bigE term
+     *
+    */
+    double get_bigE( double desired_output ) const;
+
 
     /**
      * @brief Calculate and update the `delta` field.
